@@ -516,6 +516,7 @@ public class PathFinder {
         for (PathFinder.Vertex node : shortestPath) {
             StdDraw.filledSquare(node.y, randomlyGenMatrix.length - node.x - 1, 0.5);
         }
+        //Patches 1
 
         // Show the start and end points in the graphical matrix in StdOut
         StdDraw.setPenColor(StdDraw.BLACK);
