@@ -499,7 +499,7 @@ public class PathFinder {
         System.out.println("i = " + Ai + "," + Aj);
         System.out.println("j = " + Bi + "," + Bj);
         System.out.println("");
-
+        
         // Starts the Java in-built stopwatch
         Stopwatch timerFlow = new Stopwatch();
 
@@ -508,7 +508,7 @@ public class PathFinder {
         // The generated random matrix and the coordinates are given to the method as parameters
         ArrayList<PathFinder.Vertex> shortestPath = new PathFinder().euclidean(randomlyGenMatrix, Ai, Aj, Bi, Bj);
 
-        // The elapsed time is displayed
+        // The elapsed time is displayed in the console
         StdOut.println("Elapsed time = " + timerFlow.elapsedTime());
 
         // Draw the calculated path in the StdDraw output
