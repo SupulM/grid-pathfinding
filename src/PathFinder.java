@@ -465,7 +465,7 @@ public class PathFinder {
         // Following method call will generate a 2D boolean array 
         // The second parameter indicates the proportion of the open cells 
         // Lower the seocond paramemter, higher the blocked cells
-        boolean[][] randomlyGenMatrix = random(10, 0.6);
+        boolean[][] randomlyGenMatrix = random(10, 1);
 
         // print the boolean array in the console and display the graphical matrix
         StdArrayIO.print(randomlyGenMatrix);
@@ -476,24 +476,24 @@ public class PathFinder {
         int Ai, Aj, Bi, Bj;
 
         // Getting the input cordinates from the user
-//    	Scanner in = new Scanner(System.in);
-//        System.out.println("Enter i for A > ");
-//        Ai = in.nextInt();
-//        System.out.println("Enter j for A > ");
-//        Aj = in.nextInt();
-//        System.out.println("Enter i for B > ");
-//        Bi = in.nextInt();
-//        System.out.println("Enter j for B > ");
-//        Bj = in.nextInt();
+    	Scanner in = new Scanner(System.in);
+        System.out.println("Enter i for A > ");
+        Ai = in.nextInt();
+        System.out.println("Enter j for A > ");
+        Aj = in.nextInt();
+        System.out.println("Enter i for B > ");
+        Bi = in.nextInt();
+        System.out.println("Enter j for B > ");
+        Bj = in.nextInt();
         
         // Generating two cordinates randomly
-        Random random = new Random();
-        do {
-            Ai = random.nextInt(randomlyGenMatrix.length - 1 + 1);
-            Aj = random.nextInt(randomlyGenMatrix.length - 1 + 1);
-            Bi = random.nextInt(randomlyGenMatrix.length - 1 + 1);
-            Bj = random.nextInt(randomlyGenMatrix.length - 1 + 1);
-        } while /*checks whether the randomly generated cells are blocked*/ (!(randomlyGenMatrix[Ai][Aj] == true && randomlyGenMatrix[Bi][Bj] == true));
+//        Random random = new Random();
+//        do {
+//            Ai = random.nextInt(randomlyGenMatrix.length - 1 + 1);
+//            Aj = random.nextInt(randomlyGenMatrix.length - 1 + 1);
+//            Bi = random.nextInt(randomlyGenMatrix.length - 1 + 1);
+//            Bj = random.nextInt(randomlyGenMatrix.length - 1 + 1);
+//        } while /*checks whether the randomly generated cells are blocked*/ (!(randomlyGenMatrix[Ai][Aj] == true && randomlyGenMatrix[Bi][Bj] == true));
 
         // Prints the cordinates to the console
         System.out.println("i = " + Ai + "," + Aj);
