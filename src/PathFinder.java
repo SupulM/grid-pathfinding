@@ -10,10 +10,10 @@ public class PathFinder {
     ArrayList<Vertex> euclidean(boolean[][] matrix, int si, int sj, int ei, int ej) {
 
         // Setting the Horizontal and Vertical Distances
-        double hvDistance = 1.0;
+        int hvDistance = 10;
 
         // Setting the Diagonal Distance
-        double diagonalDistance = 1.4;
+        int diagonalDistance = 14;
 
         int size = matrix.length;
 
@@ -39,24 +39,27 @@ public class PathFinder {
         // We manually set the distance value of the source Vertex as 0
         source.distance = 0;
 
-        // Comparator for the Queue we're about to use
-        Comparator<Vertex> adjacencyComparator = (left, right) -> {
-            if (left.distance > (right.distance)) {
+        // Comparator to prioritize the the Queue we're about to use
+        Comparator<Vertex> adjacencyComparator = (x, y) -> {
+            if ((x.distance) > (y.distance)) {
                 return 1;
             }
-            return -1;
+            if ((x.distance) < (y.distance)) {
+                return -1;
+            }
+            return 0;
         };
 
         // This queue will store the nodes we visit
         Queue<Vertex> queue = new PriorityQueue(size, adjacencyComparator);
-        
+
         queue.add(source);
 
         while (queue.size() > 0) {
             Vertex current = queue.remove();
             Vertex temp;
 
-            // Nodes above the current node are checked
+            // Nodes above the current node are checked as following
             if (current.x - 1 >= 0) {
 
                 // Horizontally up node
@@ -64,6 +67,7 @@ public class PathFinder {
                 if (!temp.visited && !temp.blocked && temp.distance > current.distance + hvDistance) {
                     temp.distance = current.distance + hvDistance;
                     temp.parent = current;
+                    // graph[current.x - 1][current.y].parent = current;
                     queue.add(temp);
                 }
 
@@ -73,6 +77,7 @@ public class PathFinder {
                     if (!temp.visited && !temp.blocked && temp.distance > current.distance + diagonalDistance) {
                         temp.distance = current.distance + diagonalDistance;
                         temp.parent = current;
+                        // graph[current.x - 1][current.y - 1].parent = current;
                         queue.add(temp);
                     }
                 }
@@ -81,8 +86,9 @@ public class PathFinder {
                 if (current.y + 1 < size) {
                     temp = graph[current.x - 1][current.y + 1];
                     if (!temp.visited && !temp.blocked && temp.distance > current.distance + diagonalDistance) {
-                        temp.distance = current.distance + diagonalDistance;
+                        // temp.distance = current.distance + diagonalDistance;
                         temp.parent = current;
+                        graph[current.x - 1][current.y + 1].parent = current;
                         queue.add(temp);
                     }
                 }
@@ -94,6 +100,7 @@ public class PathFinder {
                 if (!temp.visited && !temp.blocked && temp.distance > current.distance + hvDistance) {
                     temp.distance = current.distance + hvDistance;
                     temp.parent = current;
+                    // graph[current.x][current.y - 1].parent = current;
                     queue.add(temp);
                 }
             }
@@ -104,6 +111,7 @@ public class PathFinder {
                 if (!temp.visited && !temp.blocked && temp.distance > current.distance + hvDistance) {
                     temp.distance = current.distance + hvDistance;
                     temp.parent = current;
+                    // graph[current.x][current.y + 1].parent = current;
                     queue.add(temp);
                 }
             }
@@ -111,11 +119,11 @@ public class PathFinder {
             if (current.x + 1 < size) {
                 
                 temp = graph[current.x + 1][current.y];
-
                 // Horizontally bottom most node
                 if (!temp.visited && !temp.blocked && temp.distance > current.distance + hvDistance) {
                     temp.distance = current.distance + hvDistance;
                     temp.parent = current;
+                    // graph[current.x + 1][current.y].parent = current;
                     queue.add(temp);
                 }
 
@@ -125,6 +133,7 @@ public class PathFinder {
                     if (!temp.visited && !temp.blocked && temp.distance > current.distance + diagonalDistance) {
                         temp.distance = current.distance + diagonalDistance;
                         temp.parent = current;
+                        //graph[current.x + 1][current.y - 1].parent = current;
                         queue.add(temp);
                     }
                 }
@@ -135,29 +144,30 @@ public class PathFinder {
                     if (!temp.visited && !temp.blocked && temp.distance > current.distance + diagonalDistance) {
                         temp.distance = current.distance + diagonalDistance;
                         temp.parent = current;
+                        //graph[current.x + 1][current.y + 1].parent = current;
                         queue.add(temp);
                     }
                 }
             }
-            
+
             // After checking all neibour nodes the visited boolean of the current node is set to true
             current.visited = true;
+            graph[current.x][current.y].visited = true;
         }
-        
-        System.out.println("Total Cost: " + graph[destination.x][destination.y].distance);
 
         ArrayList<Vertex> path = new ArrayList<>();
 
         // If the path is possible
         if (!(graph[destination.x][destination.y].distance == Integer.MAX_VALUE)) {
             Vertex current = graph[destination.x][destination.y];
-
             while (current.parent != null) {
                 path.add(current.parent);
                 current = current.parent;
             }
+            System.out.println("Total Cost: " + (graph[destination.x][destination.y].distance) / 10);
+
         } else {
-            System.out.println("No possible path");
+            System.out.println("The destination node cannot be reached from the source!");
         }
 
         return path;
@@ -166,7 +176,7 @@ public class PathFinder {
     ArrayList<Vertex> manhatten(boolean[][] matrix, int si, int sj, int ei, int ej) {
 
         // Horizontal and Vertical Distance
-        double hvDistance = 1.0;
+        double hvDistance = 10;
 
         int size = matrix.length;
 
@@ -229,7 +239,7 @@ public class PathFinder {
                     queue.add(t);
                 }
             }
-            
+
             if (current.x + 1 < size) {
 
                 // Down Down
@@ -242,8 +252,6 @@ public class PathFinder {
             }
             current.visited = true;
         }
-        
-        System.out.println("Total Cost: " + graph[destination.x][destination.y].distance);
 
         ArrayList<Vertex> path = new ArrayList<>();
 
@@ -254,17 +262,18 @@ public class PathFinder {
                 path.add(current.parent);
                 current = current.parent;
             }
+            System.out.println("Total Cost: " + (graph[destination.x][destination.y].distance) / 10);
         } else {
-            System.out.println("The destination node cannot be reached fromt the source!");
+            System.out.println("The destination node cannot be reached from the source!");
         }
 
         return path;
     }
-    
-        ArrayList<Vertex> chebyshev(boolean[][] matrix, int si, int sj, int ei, int ej) {
 
-        double hvDistance = 1.0;
-        double diagonalDistance = 1.0;
+    ArrayList<Vertex> chebyshev(boolean[][] matrix, int si, int sj, int ei, int ej) {
+
+        double hvDistance = 10;
+        double diagonalDistance = 10;
 
         int size = matrix.length;
 
@@ -292,7 +301,7 @@ public class PathFinder {
         };
 
         Queue<Vertex> queue = new PriorityQueue(size, adjacencyComparator);
-        
+
         queue.add(source);
 
         while (queue.size() > 0) {
@@ -345,7 +354,7 @@ public class PathFinder {
                 }
             }
             if (current.x + 1 < size) {
-                
+
                 temp = graph[current.x + 1][current.y];
 
                 if (!temp.visited && !temp.blocked && temp.distance > current.distance + hvDistance) {
@@ -372,11 +381,9 @@ public class PathFinder {
                     }
                 }
             }
-            
+
             current.visited = true;
         }
-        
-        System.out.println("Total Cost: " + graph[destination.x][destination.y].distance);
 
         ArrayList<Vertex> path = new ArrayList<>();
 
@@ -387,6 +394,7 @@ public class PathFinder {
                 path.add(current.parent);
                 current = current.parent;
             }
+            System.out.println("Total Cost: " + (graph[destination.x][destination.y].distance) / 10);
         } else {
             System.out.println("The destination node cannot be reached fromt the source!");
         }
@@ -476,7 +484,7 @@ public class PathFinder {
         int Ai, Aj, Bi, Bj;
 
         // Getting the input cordinates from the user
-    	Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         System.out.println("Enter i for A > ");
         Ai = in.nextInt();
         System.out.println("Enter j for A > ");
@@ -485,7 +493,7 @@ public class PathFinder {
         Bi = in.nextInt();
         System.out.println("Enter j for B > ");
         Bj = in.nextInt();
-        
+
         // Generating two cordinates randomly
 //        Random random = new Random();
 //        do {
@@ -495,11 +503,11 @@ public class PathFinder {
 //            Bj = random.nextInt(randomlyGenMatrix.length - 1 + 1);
 //        } while /*checks whether the randomly generated cells are blocked*/ (!(randomlyGenMatrix[Ai][Aj] == true && randomlyGenMatrix[Bi][Bj] == true));
 
-        // Prints the cordinates to the console
+        //Prints the cordinates to the console
         System.out.println("i = " + Ai + "," + Aj);
         System.out.println("j = " + Bi + "," + Bj);
         System.out.println("");
-        
+
         // Starts the Java in-built stopwatch
         Stopwatch timerFlow = new Stopwatch();
 
